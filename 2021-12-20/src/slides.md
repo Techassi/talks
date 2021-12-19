@@ -12,7 +12,7 @@ Domain Name System (DNS)
 
 <div class="absolute bottom-10">
     <span class="font-700">
-        UnFUG | Sascha | 20.12.21
+        UnFUG | Sascha | 20.12.21 | <a href="https://github.com/Techassi/talks/tree/main/2021-12-20">https://github.com/Techassi/talks</a>
     </span>
 </div>
 
@@ -977,3 +977,114 @@ func UnpackDomainName(data []byte, offset int) (string, int) {
   return string(buf), offset
 }
 ```
+
+---
+
+# Multiplexing <InlineMarkerCode text="pkg/server/*" />
+
+```go
+func (s *Server) Run() error {
+  if s.isRunning() {
+    return ErrServerAlreadyRunning
+  }
+
+  switch s.Network {
+  case "udp", "udp4", "udp6":
+    listener, err := createUDPListener(s.Network, s.Address, s.Port)
+    if err != nil {
+      return err
+    }
+    s.UDPListener = listener
+    go s.serveUDP()
+    return nil
+  case "tcp", "tcp4", "tcp6":
+    listener, err := createTCPListener(s.Network, s.Address, s.Port)
+    if err != nil {
+      return err
+    }
+    s.TCPListener = listener
+    go s.serveTCP()
+    return nil
+  }
+
+  return ErrNoSuchNetwork
+}
+```
+
+---
+
+# Weitere interessante Code Ausschnitte
+
+... welche ich in diesem Vortrag nicht im Detail vorstelle. Dennoch können wir uns diese gerne nach dem Talk gemeinsam 
+anschauen.
+
+<v-clicks>
+
+- Cache / Store
+- Master Zones
+- Resolver
+- EDNS
+
+</v-clicks>
+
+---
+
+# Aktueller Stand / Ausblick
+
+<div class="grid grid-cols-2 gap-x-4 gap-y-4">
+<div>
+
+### Unterstützte RFCs
+
+Folgende RFCs sind zum Großteil unterstütz. Sicherlich mit Bugs und diversen Edge Cases :)
+
+- Concepts and Facilities [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034)
+- Implementation and Specification [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035)
+- Serial Number Arithmetic [RFC 1982](https://datatracker.ietf.org/doc/html/rfc1982)
+- Extension Mechanisms for DNS [RFC 6891](https://datatracker.ietf.org/doc/html/rfc6891)
+
+</div>
+<div v-click>
+
+### Ausblick
+
+- RPZs [DRAFT Vixie DNS RPZ](https://datatracker.ietf.org/doc/html/draft-vixie-dns-rpz-00)
+- LOC RR [RFC 1876](https://datatracker.ietf.org/doc/html/rfc1876)
+- Incremental Zone Transfer in DNS [RFC 1995](https://datatracker.ietf.org/doc/html/rfc1995)
+- und weitere ...
+
+</div>
+</div>
+
+---
+layout: intro-image-right
+image: './img/this_is_fine_gopher.svg'
+---
+
+# Frageründchen
+
+All eure Fragen :)
+
+---
+
+# Quellen
+
+<div class="grid grid-cols-2 gap-x-4 gap-y-4">
+<div>
+
+- [RFC 952](https://datatracker.ietf.org/doc/html/rfc952)
+- [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034)
+- [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035)
+- [RFC 1876](https://datatracker.ietf.org/doc/html/rfc1876)
+- [RFC 1982](https://datatracker.ietf.org/doc/html/rfc1982)
+- [RFC 1995](https://datatracker.ietf.org/doc/html/rfc1995)
+- [RFC 6891](https://datatracker.ietf.org/doc/html/rfc6891)
+
+</div>
+<div>
+
+- Slidev: [https://github.com/slidevjs/slidev](https://github.com/slidevjs/slide)
+- Slidev Theme: [https://github.com/slidevjs/themes/tree/main/packages/theme-apple-basic](https://github.com/slidevjs/themes/tree/main/packages/theme-apple-basic)
+
+</div>
+</div>
