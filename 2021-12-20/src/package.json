@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build --base /2021/unfug-void --out ../../dist/2021/unfug-void",
+    "export": "slidev export --dark --output ../2021-12-20-unfug-void.pdf"
+  }
+}
