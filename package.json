@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "talks",
+  "description": "Various talks",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Techassi/talks.git"
+  },
+  "keywords": [
+    "slidev",
+    "slides",
+    "talks"
+  ],
+  "author": "Techassi",
+  "homepage": "https://github.com/Techassi/talks#readme",
+  "scripts": {
+    "build": "rimraf dist && pnpm -r run build",
+    "export": "pnpm -r run export"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^0.27.20",
+    "@slidev/theme-apple-basic": "^0.20.0",
+    "playwright-chromium": "^1.17.1",
+    "pnpm": "^6.24.1",
+    "rimraf": "^3.0.2"
+  }
+}
